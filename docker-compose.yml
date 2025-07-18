@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  frontend:
+    build: ./AdminDashboard
+    ports:
+      - "3000:80"
+    depends_on:
+      - Backend
+
+  backend:
+    build: ./Backend
+    ports:
+      - "8000:8000"
+
+
+  llama3:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    command: >
+      bash -c "
+        ollama pull llama3 &&
+        ollama serve
+      "
+
+volumes:
+  db_data:
+  ollama_models:
